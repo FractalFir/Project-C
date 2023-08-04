@@ -7,7 +7,7 @@ public struct Triangle{
     public static Triangle FromPoints((Vector3,Vector2) p1, (Vector3,Vector2) p2, (Vector3,Vector2) p3){
         Triangle triangle = new Triangle();
         triangle.points = (p1.Item1,p2.Item1,p3.Item1);
-        triangle.uv = (p1.Item2,p2.Item2,p2.Item2);
+        triangle.uv = (p1.Item2,p2.Item2,p3.Item2);
         return triangle;
     }
 }

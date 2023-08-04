@@ -7,7 +7,7 @@ public struct WallState{
 class WorldData{
     Vec<Room> rooms;
     int worldSize;
-    public int minVolume = 1000;
+    public int minVolume = 250;
     private WallState[,,] walls;
     public void DebugDisplay(){
         /*
@@ -85,7 +85,7 @@ class WorldData{
     }
     public WallState GetWallState(int x, int y, int z){
         if(x < 0 || y < 0 || z < 0)return new WallState();
-        if(x > worldSize || y > worldSize || y > worldSize)return new WallState();
+        if(x > worldSize || y > worldSize || z > worldSize)return new WallState();
         return walls[x,y,z];
     }
 }

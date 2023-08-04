@@ -18,64 +18,95 @@ public class World : MonoBehaviour
             //Gizmos.DrawCube(center, new Vector3(1.0f,1.0f,0.25f));    
             meshBuilder.AddQuad((
                 (new Vector3(x,y,z + WALL_SIZE),new Vector2(x,y)),
-                (new Vector3(x + WORLD_SCALE,y,z + WALL_SIZE),new Vector2(x + 1,y)),
-                (new Vector3(x + WORLD_SCALE,y + WORLD_SCALE,z + WALL_SIZE),new Vector2(x + 1,y + 1)),
-                (new Vector3(x,y + WORLD_SCALE,z + WALL_SIZE),new Vector2(x,y + 1))
+                (new Vector3(x + WORLD_SCALE,y,z + WALL_SIZE),new Vector2(x + WORLD_SCALE,y)),
+                (new Vector3(x + WORLD_SCALE,y + WORLD_SCALE,z + WALL_SIZE),new Vector2(x + WORLD_SCALE,y + WORLD_SCALE)),
+                (new Vector3(x,y + WORLD_SCALE,z + WALL_SIZE),new Vector2(x,y + WORLD_SCALE))
             ));
-            
+            if(!data.GetWallState(ix + 1,iy,iz).z){
+                meshBuilder.AddQuad((                  
+                    (new Vector3(x + WORLD_SCALE,   y,                  z - WALL_SIZE),new Vector2(y - WALL_SIZE,x)),
+                    (new Vector3(x + WORLD_SCALE,   y + WORLD_SCALE,    z - WALL_SIZE),new Vector2(y - WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x + WORLD_SCALE,   y + WORLD_SCALE,    z + WALL_SIZE ),new Vector2(y + WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x + WORLD_SCALE,   y,                  z + WALL_SIZE),new Vector2(y + WALL_SIZE,x))
+                ));
+            }
+            if(!data.GetWallState(ix,iy + 1,iz).z){
+                meshBuilder.AddQuad((                  
+                    (new Vector3(x,                 y + WORLD_SCALE,    z + WALL_SIZE),new Vector2(y + WALL_SIZE,x)),
+                    (new Vector3(x + WORLD_SCALE,   y + WORLD_SCALE,    z + WALL_SIZE ),new Vector2(y + WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x + WORLD_SCALE,   y + WORLD_SCALE,    z - WALL_SIZE),new Vector2(y - WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x,                 y + WORLD_SCALE,    z - WALL_SIZE),new Vector2(y - WALL_SIZE,x))
+                ));
+            }
+            if(!data.GetWallState(ix,iy - 1,iz).z){
+                meshBuilder.AddQuad((                  
+                    (new Vector3(x,                 y,    z - WALL_SIZE),new Vector2(y - WALL_SIZE,x)),
+                    (new Vector3(x + WORLD_SCALE,   y,    z - WALL_SIZE),new Vector2(y - WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x + WORLD_SCALE,   y,    z + WALL_SIZE ),new Vector2(y + WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x,                 y,    z + WALL_SIZE),new Vector2(y + WALL_SIZE,x))
+                ));
+            }
+            if(!data.GetWallState(ix - 1,iy,iz).z){
+                meshBuilder.AddQuad((                    
+                    (new Vector3(x,y,                  z + WALL_SIZE),new Vector2(y + WALL_SIZE,x)),
+                    (new Vector3(x,y + WORLD_SCALE,    z + WALL_SIZE ),new Vector2(y + WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x,y + WORLD_SCALE,    z - WALL_SIZE),new Vector2(y - WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x,y,                  z - WALL_SIZE),new Vector2(y - WALL_SIZE,x))
+                ));
+            }
             meshBuilder.AddQuad((
                 (new Vector3(x,y,z - WALL_SIZE),new Vector2(x,y)),
-                (new Vector3(x,y + WORLD_SCALE,z - WALL_SIZE),new Vector2(x,y + 1)),
-                (new Vector3(x + WORLD_SCALE,y + WORLD_SCALE,z - WALL_SIZE),new Vector2(x + 1,y + 1)),
-                (new Vector3(x + WORLD_SCALE,y,z - WALL_SIZE),new Vector2(x + 1,y))
+                (new Vector3(x,y + WORLD_SCALE,z - WALL_SIZE),new Vector2(x,y + WORLD_SCALE)),
+                (new Vector3(x + WORLD_SCALE,y + WORLD_SCALE,z - WALL_SIZE),new Vector2(x + WORLD_SCALE,y + WORLD_SCALE)),
+                (new Vector3(x + WORLD_SCALE,y,z - WALL_SIZE),new Vector2(x + WORLD_SCALE,y))
             ));
         }
         if(currState.y){
             //Vector3 center = new Vector3(x + 0.5f,y + 0.125f,z + 0.5f);
             //Gizmos.DrawCube(center, new Vector3(1.0f,0.25f,1.0f));
             meshBuilder.AddQuad((
-                (new Vector3(x,y + WALL_SIZE, z + WORLD_SCALE),new Vector2(x,z + 1)),
-                (new Vector3(x + WORLD_SCALE,y + WALL_SIZE,z + WORLD_SCALE),new Vector2(x + 1,z + 1)),
-                (new Vector3(x + WORLD_SCALE,y + WALL_SIZE,z),new Vector2(x + 1,z)),
+                (new Vector3(x,y + WALL_SIZE, z + WORLD_SCALE),new Vector2(x,z + WORLD_SCALE)),
+                (new Vector3(x + WORLD_SCALE,y + WALL_SIZE,z + WORLD_SCALE),new Vector2(x + WORLD_SCALE,z + WORLD_SCALE)),
+                (new Vector3(x + WORLD_SCALE,y + WALL_SIZE,z),new Vector2(x + WORLD_SCALE,z)),
                 (new Vector3(x,y + WALL_SIZE,z),new Vector2(x,z))
             ));
             if(!data.GetWallState(ix + 1,iy,iz).y){
                 meshBuilder.AddQuad((
-                    (new Vector3(x + WORLD_SCALE,y + WALL_SIZE, z),new Vector2(x,z)),
-                    (new Vector3(x + WORLD_SCALE,y + WALL_SIZE, z + WORLD_SCALE),new Vector2(x,z + 1)),
-                    (new Vector3(x + WORLD_SCALE,y - WALL_SIZE, z + WORLD_SCALE),new Vector2(x,z + 1)),
-                    (new Vector3(x + WORLD_SCALE,y - WALL_SIZE, z),new Vector2(x,z))
+                    (new Vector3(x + WORLD_SCALE,y + WALL_SIZE, z),new Vector2(x + WALL_SIZE,z)),
+                    (new Vector3(x + WORLD_SCALE,y + WALL_SIZE, z + WORLD_SCALE),new Vector2(x + WALL_SIZE,z + WORLD_SCALE)),
+                    (new Vector3(x + WORLD_SCALE,y - WALL_SIZE, z + WORLD_SCALE),new Vector2(x - WALL_SIZE,z + WORLD_SCALE)),
+                    (new Vector3(x + WORLD_SCALE,y - WALL_SIZE, z),new Vector2(x - WALL_SIZE,z))
                 ));
             }
             if(!data.GetWallState(ix - 1,iy,iz).y){
                 meshBuilder.AddQuad((
-                    (new Vector3(x,y - WALL_SIZE, z),new Vector2(x,z)),
-                    (new Vector3(x,y - WALL_SIZE, z + WORLD_SCALE),new Vector2(x,z + 1)),
-                    (new Vector3(x,y + WALL_SIZE, z + WORLD_SCALE),new Vector2(x,z + 1)),
-                    (new Vector3(x,y + WALL_SIZE, z),new Vector2(x,z))
+                    (new Vector3(x,y - WALL_SIZE, z),new Vector2(x - WALL_SIZE,z)),
+                    (new Vector3(x,y - WALL_SIZE, z + WORLD_SCALE),new Vector2(x - WALL_SIZE,z + WORLD_SCALE)),
+                    (new Vector3(x,y + WALL_SIZE, z + WORLD_SCALE),new Vector2(x + WALL_SIZE,z + WORLD_SCALE)),
+                    (new Vector3(x,y + WALL_SIZE, z),new Vector2(x + WALL_SIZE,z))
                 ));
             }
             if(!data.GetWallState(ix,iy,iz + 1).y){
                 meshBuilder.AddQuad((
-                    (new Vector3(x,y - WALL_SIZE,                   z + WORLD_SCALE),new Vector2(x,z)),
-                    (new Vector3(x + WORLD_SCALE, y - WALL_SIZE,    z + WORLD_SCALE),new Vector2(x,z + 1)),
-                    (new Vector3(x + WORLD_SCALE, y + WALL_SIZE,    z + WORLD_SCALE),new Vector2(x,z + 1)),
-                    (new Vector3(x,y + WALL_SIZE,                   z + WORLD_SCALE),new Vector2(x,z))
+                    (new Vector3(x,y - WALL_SIZE,                   z + WORLD_SCALE),new Vector2(x + WALL_SIZE,z)),
+                    (new Vector3(x + WORLD_SCALE, y - WALL_SIZE,    z + WORLD_SCALE),new Vector2(x + WALL_SIZE,z + WORLD_SCALE)),
+                    (new Vector3(x + WORLD_SCALE, y + WALL_SIZE,    z + WORLD_SCALE),new Vector2(x - WALL_SIZE,z + WORLD_SCALE)),
+                    (new Vector3(x,y + WALL_SIZE,                   z + WORLD_SCALE),new Vector2(x - WALL_SIZE,z))
                 ));
             }
             if(!data.GetWallState(ix,iy,iz - 1).y){
                 meshBuilder.AddQuad((
-                    (new Vector3(x,y + WALL_SIZE,               z),new Vector2(x,z)),
-                    (new Vector3(x + WORLD_SCALE,y + WALL_SIZE, z),new Vector2(x,z + 1)),
-                    (new Vector3(x + WORLD_SCALE,y - WALL_SIZE, z),new Vector2(x,z + 1)),
-                    (new Vector3(x,y - WALL_SIZE,               z),new Vector2(x,z))
+                    (new Vector3(x,y + WALL_SIZE,               z),new Vector2(x - WALL_SIZE,z)),
+                    (new Vector3(x + WORLD_SCALE,y + WALL_SIZE, z),new Vector2(x - WALL_SIZE,z + WORLD_SCALE)),
+                    (new Vector3(x + WORLD_SCALE,y - WALL_SIZE, z),new Vector2(x + WALL_SIZE,z + WORLD_SCALE)),
+                    (new Vector3(x,y - WALL_SIZE,               z),new Vector2(x + WALL_SIZE,z))
                 ));
             }
             meshBuilder.AddQuad((
                 (new Vector3(x,y - WALL_SIZE,z),new Vector2(x,z)),
-                (new Vector3(x + WORLD_SCALE,y - WALL_SIZE,z),new Vector2(x + 1,z)),
-                (new Vector3(x + WORLD_SCALE,y - WALL_SIZE,z + WORLD_SCALE),new Vector2(x + 1,z + 1)),
-                (new Vector3(x,y - WALL_SIZE, z + WORLD_SCALE),new Vector2(x,z + 1))
+                (new Vector3(x + WORLD_SCALE,y - WALL_SIZE,z),new Vector2(x + WORLD_SCALE,z)),
+                (new Vector3(x + WORLD_SCALE,y - WALL_SIZE,z + WORLD_SCALE),new Vector2(x + WORLD_SCALE,z + WORLD_SCALE)),
+                (new Vector3(x,y - WALL_SIZE, z + WORLD_SCALE),new Vector2(x,z + WORLD_SCALE))
             ));           
         }
         if(currState.x){
@@ -83,14 +114,46 @@ public class World : MonoBehaviour
             //Gizmos.DrawCube(center, new Vector3(0.25f,1.0f,1.0f));
             meshBuilder.AddQuad((
                 (new Vector3(x + WALL_SIZE,y,z),new Vector2(y,z)),
-                (new Vector3(x + WALL_SIZE,y + WORLD_SCALE,z),new Vector2(y + 1,z)),
-                (new Vector3(x + WALL_SIZE,y + WORLD_SCALE,z + WORLD_SCALE),new Vector2(y + 1,z + 1)),
-                (new Vector3(x + WALL_SIZE,y, z + WORLD_SCALE),new Vector2(y,z + 1))
+                (new Vector3(x + WALL_SIZE,y + WORLD_SCALE,z),new Vector2(y + WORLD_SCALE,z)),
+                (new Vector3(x + WALL_SIZE,y + WORLD_SCALE,z + WORLD_SCALE),new Vector2(y + WORLD_SCALE,z + WORLD_SCALE)),
+                (new Vector3(x + WALL_SIZE,y, z + WORLD_SCALE),new Vector2(y,z + WORLD_SCALE))
             ));
+            if(!data.GetWallState(ix,iy + 1,iz).x){
+                meshBuilder.AddQuad((             
+                    (new Vector3(x - WALL_SIZE,   y + WORLD_SCALE,    z),new Vector2(y - WALL_SIZE,x)),
+                    (new Vector3(x - WALL_SIZE,   y + WORLD_SCALE,    z + WORLD_SCALE),new Vector2(y - WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x + WALL_SIZE,   y + WORLD_SCALE,    z + WORLD_SCALE),new Vector2(y + WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x + WALL_SIZE,   y + WORLD_SCALE,    z),new Vector2(y + WALL_SIZE,x))
+                ));
+            }
+            if(!data.GetWallState(ix,iy - 1,iz).x){
+                meshBuilder.AddQuad((             
+                    (new Vector3(x + WALL_SIZE,   y,    z),new Vector2(y + WALL_SIZE,x)),
+                    (new Vector3(x + WALL_SIZE,   y,    z + WORLD_SCALE),new Vector2(y + WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x - WALL_SIZE,   y,    z + WORLD_SCALE),new Vector2(y - WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x - WALL_SIZE,   y,    z),new Vector2(y - WALL_SIZE,x))
+                ));
+            }
+            if(!data.GetWallState(ix,iy,iz + 1).x){
+                meshBuilder.AddQuad((             
+                    (new Vector3(x + WALL_SIZE,   y,                  z + WORLD_SCALE),new Vector2(y + WALL_SIZE,x)),
+                    (new Vector3(x + WALL_SIZE,   y + WORLD_SCALE,    z + WORLD_SCALE),new Vector2(y + WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x - WALL_SIZE,   y + WORLD_SCALE,    z + WORLD_SCALE),new Vector2(y - WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x - WALL_SIZE,   y,                  z + WORLD_SCALE),new Vector2(y - WALL_SIZE,x))
+                ));
+            }
+            if(!data.GetWallState(ix,iy,iz - 1).x){
+                meshBuilder.AddQuad((             
+                    (new Vector3(x - WALL_SIZE,   y,                  z),new Vector2(y - WALL_SIZE,x)),
+                    (new Vector3(x - WALL_SIZE,   y + WORLD_SCALE,    z),new Vector2(y - WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x + WALL_SIZE,   y + WORLD_SCALE,    z),new Vector2(y + WALL_SIZE,x + WORLD_SCALE)),
+                    (new Vector3(x + WALL_SIZE,   y,                  z),new Vector2(y + WALL_SIZE,x))
+                ));
+            }
             meshBuilder.AddQuad((
-                (new Vector3(x - WALL_SIZE,y, z + WORLD_SCALE),new Vector2(y,z + 1)),
-                (new Vector3(x - WALL_SIZE,y + WORLD_SCALE,z + WORLD_SCALE),new Vector2(y + 1,z + 1)),
-                (new Vector3(x - WALL_SIZE,y + WORLD_SCALE,z),new Vector2(y + 1,z)),
+                (new Vector3(x - WALL_SIZE,y, z + WORLD_SCALE),new Vector2(y,z + WORLD_SCALE)),
+                (new Vector3(x - WALL_SIZE,y + WORLD_SCALE,z + WORLD_SCALE),new Vector2(y + WORLD_SCALE,z + WORLD_SCALE)),
+                (new Vector3(x - WALL_SIZE,y + WORLD_SCALE,z),new Vector2(y + WORLD_SCALE,z)),
                 (new Vector3(x - WALL_SIZE,y,z),new Vector2(y,z))
             ));
         }
