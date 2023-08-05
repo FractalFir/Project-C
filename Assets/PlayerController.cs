@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float moveForce = 250.0f;
     public float jumpForce = 250.0f;
     public float rotationSpeed = 45.0f;
+    public float gravityChangeSpeed = 4.0f;
     public float horizontalRotationSpeed = 180.0f;
     float cameraAngle = 0.0f;
     public GameObject camera;
@@ -36,7 +37,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    Quaternion ToGravityRotation() => Quaternion.Slerp(Quaternion.identity,Quaternion.FromToRotation(transform.up, -customGravity.gravity),Time.deltaTime*16.0f) * transform.rotation;
+    Quaternion ToGravityRotation() => Quaternion.Slerp(Quaternion.identity,Quaternion.FromToRotation(transform.up, -customGravity.gravity),Time.deltaTime*gravityChangeSpeed) * transform.rotation;
     void AlignToGravity(){
         transform.rotation = ToGravityRotation();
     }
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour
         //transform.localRotation *= Quaternion.Slerp(Quaternion.identity,cameraHorizontalRotation,Time.deltaTime*rotation);
         cameraAngle = Mathf.Clamp(cameraAngle,-60.0f,60.0f);
         camera.transform.localRotation = Quaternion.Euler(cameraAngle,0.0f,0.0f);
-        transform.localRotation *= Quaternion.AngleAxis(mainAngle,CustomGravity.AxisSnap(transform.up));
+        transform.localRotation *= Quaternion.AngleAxis(mainAngle, Vector3.up);
         CursorControll();
     }
 }

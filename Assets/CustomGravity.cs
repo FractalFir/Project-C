@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CustomGravity : MonoBehaviour
 {
-    public Vector3 _gravity = Vector3.up;
+    public Vector3 _gravity = Vector3.zero;
     public static Vector3 AxisSnap(Vector3 input){
         float ax = Mathf.Abs(input.x);
         float ay = Mathf.Abs(input.y);
@@ -28,6 +28,10 @@ public class CustomGravity : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody>();
         rb.useGravity = false;
+        if(gravity == Vector3.zero){
+            Vector3 grav = new Vector3(0.5f - Random.value,0.5f - Random.value,0.5f - Random.value);
+            gravity = grav;
+        }
     }
 
     // Update is called once per frame

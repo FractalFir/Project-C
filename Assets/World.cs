@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+class RoomMeshConstructor{
+    public void CreateVisuals(){
+        
+    }   
+}
 public class World : MonoBehaviour
 {
     WorldData data;
