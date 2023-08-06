@@ -9,6 +9,17 @@ class WorldData{
     int worldSize;
     public int minVolume = 250;
     private WallState[,,] walls;
+    [System.NonSerialized]
+    World world;
+    [System.NonSerialized]
+    Room[,,] _roomInfoCache;
+    void SetupRoomChache(){
+        foreach(Room room in rooms){
+            for(int x = room.start.x; x < room.end.x; x++){
+                
+            }
+        }
+    }
     public void DebugDisplay(){
         /*
         foreach(Room room in rooms){
@@ -68,8 +79,14 @@ class WorldData{
         }
         
     }
-    public WorldData(int worldSize){
-        this.worldSize = worldSize;
+    public void SpawnItems(){
+        foreach(Room room in rooms){
+            room.SpawnItems(world);
+        }
+    }
+    public WorldData(World world){
+        this.worldSize = world.worldSize;
+        this.world = world;
         this.rooms = new Vec<Room>();
         this.walls = new WallState[worldSize + 1, worldSize + 1, worldSize + 1];
         rooms.Push(new Room(Vector3Int.zero,new Vector3Int(worldSize,worldSize,worldSize)));

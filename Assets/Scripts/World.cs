@@ -1,17 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/*
 class RoomMeshConstructor{
-    public void CreateVisuals(){
-        
-    }   
-}
+    MeshBuilder wallEndBuilder;
+    MeshBuilder floorBuilder;
+    MeshBuilder wallBuilder;
+    MeshBuilder celingBuilder;
+    public RoomMeshConstructor(){
+        this.wallEndBuilder = new MeshBuilder();
+    }
+    public void CreateVisuals(Material material){
+        Mesh[] meshes = wallEndBuilder.IntoMeshes(65536);
+        foreach(Mesh mesh in meshes){
+            GameObject go = new GameObject();
+            //go.transform.position = MeshBuilder.Recenter(mesh);
+            go.AddComponent<WorldMeshController>();
+            go.AddComponent<MeshFilter>().mesh = mesh;
+            go.AddComponent<MeshCollider>().sharedMesh = mesh;
+            go.AddComponent<MeshRenderer>().material = material;
+        }
+        meshes = floorBuilder.IntoMeshes(65536);
+        foreach(Mesh mesh in meshes){
+            GameObject go = new GameObject();
+            //go.transform.position = MeshBuilder.Recenter(mesh);
+            go.AddComponent<WorldMeshController>();
+            go.AddComponent<MeshFilter>().mesh = mesh;
+            go.AddComponent<MeshCollider>().sharedMesh = mesh;
+            go.AddComponent<MeshRenderer>().material = material;
+        }
+        meshes = wallBuilder.IntoMeshes(65536);
+        foreach(Mesh mesh in meshes){
+            GameObject go = new GameObject();
+            //go.transform.position = MeshBuilder.Recenter(mesh);
+            go.AddComponent<WorldMeshController>();
+            go.AddComponent<MeshFilter>().mesh = mesh;
+            go.AddComponent<MeshCollider>().sharedMesh = mesh;
+            go.AddComponent<MeshRenderer>().material = material;
+        }
+        meshes = wallBuilder.IntoMeshes(65536);
+        foreach(Mesh mesh in meshes){
+            GameObject go = new GameObject();
+            //go.transform.position = MeshBuilder.Recenter(mesh);
+            go.AddComponent<WorldMeshController>();
+            go.AddComponent<MeshFilter>().mesh = mesh;
+            go.AddComponent<MeshCollider>().sharedMesh = mesh;
+            go.AddComponent<MeshRenderer>().material = material;
+        }
+    }  
+}*/
 public class World : MonoBehaviour
 {
     WorldData data;
     public int worldSize = 64;
     const float WALL_SIZE = 0.125f;
-    const float WORLD_SCALE = 3.0f;
+    public const float WORLD_SCALE = 3.0f;
     void CreateWallsAt(MeshBuilder meshBuilder,int ix,int iy,int iz){
         WallState currState = data.GetWallState(ix,iy,iz);
         float x = ix*WORLD_SCALE;
@@ -183,12 +226,17 @@ public class World : MonoBehaviour
         }
         //this.gameObject.GetComponent<MeshFilter>().mesh = meshBuilder.IntoMesh();
     }
+    public GameObject testCubePrefab;
+    public GameObject GetFloorSpawnablePrefab(){
+        return testCubePrefab;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        data = new WorldData(worldSize);
+        data = new WorldData(this);
         data.CarveRandomHoles();
         CreateWalls();
+        data.SpawnItems();
     }
     void OnDrawGizmos(){
         if(data != null){
