@@ -7,19 +7,40 @@ public struct WallState{
 class WorldData{
     Vec<Room> rooms;
     int worldSize;
-    public int minVolume = 250;
+    public int minVolume = 125;
     private WallState[,,] walls;
     [System.NonSerialized]
     World world;
     [System.NonSerialized]
     Room[,,] _roomInfoCache;
     void SetupRoomChache(){
+        if(_roomInfoCache == null){
+            _roomInfoCache = new Room[worldSize,worldSize,worldSize];
+        }
         foreach(Room room in rooms){
-            for(int x = room.start.x; x < room.end.x; x++){
-                
+            int startX = room.start.x;
+            //if(startX < 0)startX += 1;
+            for(int x = startX; x < room.end.x; x++){
+                for(int y = room.start.y; y < room.end.y; y++){
+                    for(int z = room.start.z; z < room.end.z; z++){
+                        if(_roomInfoCache[x,y,z] != null)Debug.Log($"Rooms {_roomInfoCache[x,y,z]} and {room} overlap.");
+                        _roomInfoCache[x,y,z] = room;
+                        
+                    }
+                }
             }
         }
     }
+    public Room QueryRoom(int x, int y, int z) {
+        if(x < 0) x = 0;
+        else if(x >= worldSize) x = worldSize - 1;
+        if(y < 0) y = 0;
+        else if(y >= worldSize) y = worldSize - 1;
+        if(z < 0) z = 0;
+        else if(z >= worldSize) z = worldSize - 1;
+        return _roomInfoCache[x,y,z];
+    }
+    public Vector3 QueryRoomDirection(int x, int y, int z) => QueryRoom(x,y,z).gravity;
     public void DebugDisplay(){
         /*
         foreach(Room room in rooms){
@@ -54,9 +75,9 @@ class WorldData{
             for(int y = 1; y < worldSize; y++){
                 for(int z = 1; z < worldSize; z++){
                     WallState currState = this.GetWallState(x,y,z);
-                    if(Random.Range(0,16) == 0) currState.x = false;
-                    if(Random.Range(0,16) == 0) currState.y = false;
-                    if(Random.Range(0,16) == 0) currState.z = false;
+                    if(Random.Range(0,8) == 0) currState.x = false;
+                    if(Random.Range(0,8) == 0) currState.y = false;
+                    if(Random.Range(0,8) == 0) currState.z = false;
                     this.SetWallState(x,y,z,currState);
                 }
             }
@@ -89,11 +110,12 @@ class WorldData{
         this.world = world;
         this.rooms = new Vec<Room>();
         this.walls = new WallState[worldSize + 1, worldSize + 1, worldSize + 1];
-        rooms.Push(new Room(Vector3Int.zero,new Vector3Int(worldSize,worldSize,worldSize)));
+        rooms.Push(new Room(Vector3Int.zero,new Vector3Int(worldSize,worldSize,worldSize),world.roomStyles.Length));
         Autosplit(16);
         foreach(Room room in rooms){
             room.SetupWalls(this);
         }
+        SetupRoomChache();
     }
     public void SetWallState(int x, int y, int z,WallState state){
         if(x < 0 || y < 0 || z < 0)return;

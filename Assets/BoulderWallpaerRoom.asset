@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5caeb872f22ccf7858f77c89dea8f4, type: 3}
+  m_Name: BoulderWallpaerRoom
+  m_EditorClassIdentifier: 
+  roomMaterial: {fileID: 2100000, guid: 59a91e5a7f63161009e5055014745520, type: 2}

@@ -2,12 +2,20 @@ using UnityEngine;
 class Room{
     Vector3Int _start;
     Vector3Int _end;
-    Vector3 gravDir;
+    Vector3 _gravDir;
+    int _styleCount;
+    int _style;
+    public int style{
+        get => _style;
+    }
+    public Vector3 gravity{
+        get=>_gravDir;
+    }
     Vector3Int size{
         get=>_end - _start;
     }
     public Vector3Int start{
-        get=>start;
+        get=>_start;
     }
     public Vector3Int end{
         get=>_end;
@@ -36,41 +44,47 @@ class Room{
         for(int i = 0; i < 4; i++){
             GameObject pref = world.GetFloorSpawnablePrefab();
             GameObject child = GameObject.Instantiate(pref,RandomPositionOnFloor(),Quaternion.identity);
-            child.GetComponent<CustomGravity>().gravity = gravDir;
+            child.GetComponent<CustomGravity>().gravity = _gravDir;
         }
        
     }
-    public Room(Vector3Int _start,Vector3Int _end){
+    public Room(Vector3Int _start,Vector3Int _end,int _styleCount){
         this._start = _start;
         this._end = _end;
-        this.gravDir = CustomGravity.AxisSnap(new Vector3(0.5f - Random.value,0.5f - Random.value,0.5f - Random.value));
+        Vector3 gravDir = ((Vector3)size).normalized;
+        float max = Mathf.Max(gravDir.x,Mathf.Max(gravDir.y,gravDir.z));
+        gravDir -= Vector3.one*max;
+        if(Random.Range(0,1) == 1)gravDir *= -1;
+        this._gravDir = CustomGravity.AxisSnap(gravDir);
+        this._styleCount = _styleCount;
+        this._style = Random.Range(0,_styleCount);
     }
     (Room,Room) SplitX(){
-        int split = (size.x/2 + Random.Range(0,size.x))/2;
+        int split = (size.x*2 + Random.Range(0,size.x))/5;
         int splitPosX = _start.x + split;
         Vector3Int splitStart = _start;
         splitStart.x = splitPosX;
         Vector3Int splitEnd = _end;
         splitEnd.x = splitPosX;
-        return (new Room(_start,splitEnd),new Room(splitStart,_end));
+        return (new Room(_start,splitEnd,_styleCount),new Room(splitStart,_end,_styleCount));
     }
     (Room,Room) SplitY(){
-        int split = (size.y/2 + Random.Range(0,size.y))/2;
+        int split = (size.y*2 + Random.Range(0,size.y))/5;
         int splitPosY = _start.y + split;
         Vector3Int splitStart = _start;
         splitStart.y = splitPosY;
         Vector3Int splitEnd = _end;
         splitEnd.y = splitPosY;
-        return (new Room(_start,splitEnd),new Room(splitStart,_end));
+        return (new Room(_start,splitEnd,_styleCount),new Room(splitStart,_end,_styleCount));
     }
     (Room,Room) SplitZ(){
-        int split = (size.z/2 + Random.Range(0,size.z))/2;
+        int split = (size.z*2 + Random.Range(0,size.z))/5;
         int splitPosZ = _start.z + split;
         Vector3Int splitStart = _start;
         splitStart.z = splitPosZ;
         Vector3Int splitEnd = _end;
         splitEnd.z = splitPosZ;
-        return (new Room(_start,splitEnd),new Room(splitStart,_end));
+        return (new Room(_start,splitEnd,_styleCount),new Room(splitStart,_end,_styleCount));
     }
     public (Room,Room) Split(){
         if(size.x > size.y){
