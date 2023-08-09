@@ -9,11 +9,11 @@ public class PlayerController : MonoBehaviour
     // Movoment
     public float moveForce = 250.0f;
     public float jumpForce = 250.0f;
-    public float rotationSpeed = 45.0f;
+    
     public float gravityChangeSpeed = 4.0f;
     // Camera controlss
-    public float horizontalRotationSpeed = 180.0f;
     float cameraAngle = 0.0f;
+    public float rotationSpeed = 45.0f;
     public GameObject camera;
     // Used to lock the crusor
     bool cursorLockState = true;
@@ -55,8 +55,8 @@ public class PlayerController : MonoBehaviour
             gravityUI.SetActive(false);
             isInGravityChangeUI = false;
             Vector2 changeDir = uiPos.normalized;
-            if(uiPos.magnitude < 100.0f){
-                uiPos = Vector2.zero;
+            if(uiPos.magnitude < 48.0f){
+                changeDir = Vector2.zero;
             }
             RotateGravity(changeDir);
         }
@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     void RotateGravity(Vector2 dir){
+        if(dir == Vector2.zero)return;
         dir = CustomGravity.AxisSnap(dir);
         Debug.Log($"changeDir:{dir}");
         if(dir == Vector2.up){
@@ -111,7 +112,7 @@ public class PlayerController : MonoBehaviour
     }
     void CameraRotation(){
         float mainAngle = Input.GetAxis("Mouse X") * rotationSpeed;
-        cameraAngle +=  Input.GetAxis("Mouse Y") * horizontalRotationSpeed;
+        cameraAngle -=  Input.GetAxis("Mouse Y") * rotationSpeed;
         //Quaternion cameraHorizontalRotation = Quaternion.FromToRotation(transform.forward,transform.right);
         //transform.localRotation *= Quaternion.Slerp(Quaternion.identity,cameraHorizontalRotation,Time.deltaTime*rotation);
         cameraAngle = Mathf.Clamp(cameraAngle,-60.0f,60.0f);
